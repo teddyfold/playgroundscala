@@ -22,8 +22,8 @@ case class Reply(what: String)
 case class StartWith(server: ActorRef)
 
 object RequestReplyDriver extends CompletableApp(1) {
-  val client = system.actorOf(Props[Client], "client")
-  val server = system.actorOf(Props[Server], "server")
+  val client = system.actorOf(Props[MessageClient], "client")
+  val server = system.actorOf(Props[MessageServer], "server")
   client ! StartWith(server)
 
   awaitCompletion
