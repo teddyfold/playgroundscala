@@ -23,7 +23,8 @@ object FutureDriver extends App{
 //   case Failure(ex) => Failure(ex)
 // }
 
-  val exceptionFuture = Future {
+  val  exceptionFuture = Future {
+    Thread.sleep(2000)
     100/0
   }
 
@@ -38,10 +39,17 @@ object FutureDriver extends App{
   sumFuture.foreach(x => println("ForEach "+x+1))
 
   sumFuture.onComplete {
-    case Success(res) => println("On Complete Callback "+res * res)
+    case Success(res) => println("sumFuture Complete Callback "+res * res)
     case Failure(ex) => println(ex)
 
   }
+
+  exceptionFuture.onComplete {
+    case Success(res) => println("exception future Complete Callback "+res * res)
+    case Failure(ex) => println("exception future failure: "+ex)
+
+  }
+
 
 
   //success value returned
