@@ -11,7 +11,7 @@ object FutureDriver extends App{
 
   val sumFuture=Future {
     //let thread sleep for 1 second
-    Thread.sleep(5000)
+
 
     //perform summation
     12 + 25
@@ -36,10 +36,10 @@ object FutureDriver extends App{
 
   //success value returned
   //will return NONE if main thread is not slept
-  sumFuture.foreach(x => println("ForEach "+x+1))
+  sumFuture.foreach(x => println("Sum Future ForEach "+x))
 
   sumFuture.onComplete {
-    case Success(res) => println("sumFuture Complete Callback "+res * res)
+    case Success(res) => println("sumFuture Complete Callback "+res )
     case Failure(ex) => println(ex)
 
   }
@@ -52,18 +52,37 @@ object FutureDriver extends App{
 
 
 
+  val doubleSum=sumFuture.map(_ * 2)
+
+ val newSum:Future[Int]= for(
+    sum1 <- sumFuture;
+    sum2 <- sumFuture
+  ) yield sum1 * sum2
+
+  doubleSum.foreach( doubleValue => println(s"Double Sum = $doubleValue"))
+
+
+  newSum.foreach( doubleValue => println(s"Square Sum value = $doubleValue"))
+
+
+
+  val googleString=Future{
+    scala.io.Source.fromURL("http://www.google.com").mkString
+  }
+
+  val yahooString=Future{
+    scala.io.Source.fromURL("http://www.yahoo.com").mkString
+  }
+
+
+  googleString.foreach(println(_))
+  //yahooString.foreach(println(_))
+
   //success value returned
-  Thread.sleep(6000)
+  Thread.sleep(10000)
 
 
 
-
-
-
-
-
-  //error result not returned
-  val exceptionValue=exceptionFuture.foreach(x => x)
 
 
 
